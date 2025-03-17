@@ -53,6 +53,21 @@
 version: '2.4'
 
 services:
+
+  app:
+    image : itechuw/rag-app:latest
+    container_name : rag_app
+    ports:
+      - "8282:8080"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-demoKey}
+    depends_on:
+      spark:
+        condition: service_healthy
+
   pipeline-controller:
     image: us-docker.pkg.dev/cloud-build-fhir/fhir-analytics/main:latest
     container_name: pipeline-controller
