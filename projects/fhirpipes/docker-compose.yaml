@@ -64,6 +64,9 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-demoKey}
+    depends_on:
+      spark:
+        condition: service_healthy
 
   pipeline-controller:
     image: us-docker.pkg.dev/cloud-build-fhir/fhir-analytics/main:latest
