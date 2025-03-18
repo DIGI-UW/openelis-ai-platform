@@ -4,13 +4,15 @@
 
     docker compose -f ./projects/openelis/docker-compose.yml  up -d
 
-Aacces OpenELIS Global at https://localhost/  with  `admin: adminADMIN!`
+Access OpenELIS Global at https://localhost/  with  `admin: adminADMIN!`
 
-### Run FHIR pipes 
+### Run FHIR pipes and RAG app
 
     docker compose -f ./projects/fhirpipes/docker-compose.yaml  up -d
 
-Acees Pipeline Controller at  http://localhost:8090/
+Access Pipeline Controller at  http://localhost:8090/
+
+Access RAG app at  http://localhost:8282/
 
 #### Connection to  to the spack DB
 *  user name : hive 
