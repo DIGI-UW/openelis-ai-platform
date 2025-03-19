@@ -7,7 +7,9 @@ packages:
   - reverse-proxy-nginx
   - fhir-datastore-hapi-fhir
   - monitoring
-  - database-postgres
+  - openelis
+  - data-pipeline-fhirpipes
+  - rag-sql-ai-assistant
 
 profiles:
   - name: dev

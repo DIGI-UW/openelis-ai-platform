@@ -1,0 +1,17 @@
+{
+    "id": "data-pipeline-fhirpipes",
+    "name": "Open Health Stack FHIR Data Pipeline",
+    "description": "Package for running Open Health Stack FHIR Data Pipeline",
+    "type": "infrastructure",
+    "version": "0.0.0",
+    "dependencies": [],
+    "environmentVariables": {
+        "COMPOSE_HTTP_TIMEOUT":"200",
+        "PIPELINE_CONFIG":"./config",
+        "DWH_ROOT":"./dwh",
+        "DATABASE_DUMP_MODE":"small",
+        "JAVA_OPTS":"-Xms7g -Xmx7g",
+        "SINK_SERVER_NAME":"sink-server",
+        "SINK_SERVER_PORT":"8098"
+    }
+  }
