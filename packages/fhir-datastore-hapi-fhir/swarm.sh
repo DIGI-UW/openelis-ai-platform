@@ -4,7 +4,7 @@ declare ACTION=""
 declare MODE=""
 declare COMPOSE_FILE_PATH=""
 declare UTILS_PATH=""
-declare STACK="rag-sql-ai-assistant"
+declare STACK="hapi-fhir"
 
 function init_vars() {
   ACTION=$1
@@ -32,31 +32,26 @@ function import_sources() {
 }
 
 function initialize_package() {
-  # local dev_compose_filename=""
-  log info "Initializing package"
+  local postgres_cluster_compose_filename=""
+  local postgres_dev_compose_filename=""
+  local hapi_fhir_dev_compose_filename=""
 
-  # TODO: Implement dev mode
-  # if [ "${MODE}" == "dev" ]; then
-  #   log info "Running package in DEV mode - TODO"
-  # else
-  #   log info "Running package in PROD mode"
-  # fi
+  if [ "${MODE}" == "dev" ]; then
+    log info "Running package in DEV mode"
+    postgres_dev_compose_filename="docker-compose-postgres.dev.yml"
+    hapi_fhir_dev_compose_filename="docker-compose.dev.yml"
+  else
+    log info "Running package in PROD mode"
+  fi
 
-  # if [ "${CLUSTERED_MODE}" == "true" ]; then
-  #   log warn "Clustered mode not implemented yet"
-  # fi
+  if [ "${CLUSTERED_MODE}" == "true" ]; then
+    postgres_cluster_compose_filename="docker-compose-postgres.cluster.yml"
+  fi
 
   (
+    docker::deploy_service "$STACK" "${COMPOSE_FILE_PATH}" "docker-compose-postgres.yml" "$postgres_cluster_compose_filename" "$postgres_dev_compose_filename"
 
-    # docker::await_service_status "postgres" "postgres-1" "Running"
-
-    if [[ "${ACTION}" == "init" ]]; then
-      log info "Package configuration not implemented"
-      # docker::deploy_config_importer "postgres" "$COMPOSE_FILE_PATH/importer/docker-compose..yml" 
-    fi
-
-    # Similar to docker compose up - but for docker swarm using the helpers. 
-    docker::deploy_service "$STACK" "${COMPOSE_FILE_PATH}" "docker-compose.yml"
+    docker::deploy_service "$STACK" "${COMPOSE_FILE_PATH}" "docker-compose.yml" "$hapi_fhir_dev_compose_filename"
   ) ||
     {
       log error "Failed to deploy package"
@@ -71,7 +66,7 @@ function destroy_package() {
     log warn "Volumes are only deleted on the host on which the command is run. Postgres volumes on other nodes are not deleted"
   fi
 
-  docker::prune_configs "rag-ai-assistant"
+  docker::prune_configs "hapi-fhir"
 }
 
 main() {
@@ -79,12 +74,11 @@ main() {
   import_sources
 
   if [[ "${ACTION}" == "init" ]] || [[ "${ACTION}" == "up" ]]; then
-    # if [[ "${CLUSTERED_MODE}" == "true" ]]; then
-    #   log info "Running package in Cluster node mode"
-    # else
-    #   log info "Running package in Single node mode"
-    # fi
-    log info "Running package in Single node mode"
+    if [[ "${CLUSTERED_MODE}" == "true" ]]; then
+      log info "Running package in Cluster node mode"
+    else
+      log info "Running package in Single node mode"
+    fi
 
     initialize_package
   elif [[ "${ACTION}" == "down" ]]; then
