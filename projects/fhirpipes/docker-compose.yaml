@@ -64,10 +64,19 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-demoKey}
-      - CHATWINDOW=${CHATWINDOW:10}
+      - CHATWINDOW=${CHATWINDOW}
+      - FHIR_DB_TABLES_META=${FHIR_DB_TABLES_META}
     depends_on:
       spark:
         condition: service_healthy
+
+  ollama:
+    image: itechuw/ollama:latest
+    container_name: ollama_app
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
 
   pipeline-controller:
     image: us-docker.pkg.dev/cloud-build-fhir/fhir-analytics/main:latest
@@ -119,4 +128,5 @@ services:
 
 volumes:
   spark_vol_single:
+  ollama_data:
 

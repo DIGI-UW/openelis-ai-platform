@@ -1,0 +1,140 @@
+{
+    "resourceType": "http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ViewDefinition",
+    "text": "SQL-on-FHIR-v2 view definition for ServiceRequest_flat",
+    "fhirVersion": [
+      "4.0"
+    ],
+    "select": [
+      {
+        "column": [
+          {
+            "path": "getResourceKey()",
+            "name": "id"
+          },
+          {
+            "path": "subject.getReferenceKey(Patient)",
+            "name": "patient_id"
+          },
+          {
+            "path": "encounter.getReferenceKey(Encounter)",
+            "name": "encounter_id"
+          },
+          {
+            "path": "status",
+            "name": "status"
+          },
+          {
+            "path": "intent",
+            "name": "intent"
+          },
+          {
+            "path": "priority",
+            "name": "priority"
+          },
+          {
+            "path": "authoredOn",
+            "name": "authoredOn",
+            "type": "dateTime"
+          },
+          {
+            "path": "requester.getReferenceKey(Practitioner)",
+            "name": "requester_id"
+          },
+          {
+            "path": "requester.getReferenceKey(PractitionerRole)",
+            "name": "requester_role_id"
+          },
+          {
+            "path": "requester.getReferenceKey(Organization)",
+            "name": "requester_org_id"
+          },
+          {
+            "path": "performer.getReferenceKey(Practitioner)",
+            "name": "performer_id"
+          },
+          {
+            "path": "performer.getReferenceKey(PractitionerRole)",
+            "name": "performer_role_id"
+          },
+          {
+            "path": "performer.getReferenceKey(Organization)",
+            "name": "performer_org_id"
+          },
+          {
+            "path": "occurrence.ofType(dateTime)",
+            "name": "scheduled_date",
+            "type": "dateTime"
+          },
+          {
+            "path": "occurrence.ofType(Period).start",
+            "name": "period_start",
+            "type": "dateTime"
+          },
+          {
+            "path": "occurrence.ofType(Period).end",
+            "name": "period_end",
+            "type": "dateTime"
+          },
+          {
+            "path": "doNotPerform",
+            "name": "doNotPerform",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "forEachOrNull": "code.coding",
+        "column": [
+          {
+            "path": "code",
+            "name": "code"
+          },
+          {
+            "path": "system",
+            "name": "code_sys"
+          },
+          {
+            "path": "display",
+            "name": "service_name"
+          }
+        ]
+      },
+      {
+        "forEachOrNull": "category.coding",
+        "column": [
+          {
+            "path": "code",
+            "name": "category_code"
+          },
+          {
+            "path": "system",
+            "name": "category_sys"
+          },
+          {
+            "path": "display",
+            "name": "category_display"
+          }
+        ]
+      },
+      {
+        "forEachOrNull": "reasonCode.coding",
+        "column": [
+          {
+            "path": "code",
+            "name": "reason_code"
+          },
+          {
+            "path": "system",
+            "name": "reason_code_sys"
+          },
+          {
+            "path": "display",
+            "name": "reason_display"
+          }
+        ]
+      }
+    ],
+    "name": "servicerequest_flat",
+    "status": "draft",
+    "resource": "ServiceRequest"
+  }
